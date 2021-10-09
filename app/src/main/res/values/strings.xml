@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">GithubApp</string>
+    <string name="text_name_app">Авторизация</string>
+    <string name="text_one_for_authorization">name</string>
+    <string name="text_two_for_authorization">login</string>
+    <string name="text_three_for_authorization">password</string>
+    <string name="text_button_enter">Вход</string>
+    <string name="text_button_registration">Регистрация</string>
+    <string name="text_button_recovery">Не помню логин/пароль</string>
 </resources>
