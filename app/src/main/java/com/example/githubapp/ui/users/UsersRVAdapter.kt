@@ -7,7 +7,7 @@ import com.example.githubapp.databinding.ItemUserBinding
 import com.example.githubapp.domain.IUserListPresenter
 import com.example.githubapp.domain.UserItemView
 
-class UsersRVAdapter(val presenter: IUserListPresenter) :
+class UsersRVAdapter(private val presenter: IUserListPresenter) :
     RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

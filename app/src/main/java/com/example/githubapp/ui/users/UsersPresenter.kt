@@ -1,11 +1,10 @@
 package com.example.githubapp.ui.users
 
 import com.example.githubapp.AndroidScreens
-import com.example.githubapp.domain.GithubUser
-import com.example.githubapp.domain.GithubUsersRepo
-import com.example.githubapp.domain.IUserListPresenter
-import com.example.githubapp.domain.UserItemView
+import com.example.githubapp.domain.*
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
 class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
@@ -23,6 +22,7 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
     }
 
     val usersListPresenter = UsersListPresenter()
+    private var currentDisposable = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -32,18 +32,36 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
     }
 
-    fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
-        usersListPresenter.itemClickListener = { itemView ->
-            router.navigateTo(AndroidScreens().profile(users[itemView.pos].login))
+    private fun loadData() {
+        currentDisposable.add(usersRepo.githubUsers
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { appState -> renderData(appState) })
+    }
+
+    private fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Success -> {
+                appState.data?.let { dataUsers ->
+                    usersListPresenter.users.addAll(dataUsers)
+
+                    usersListPresenter.itemClickListener = { itemView ->
+                        router.navigateTo(AndroidScreens().profile(dataUsers[itemView.pos].login))
+                    }
+                    viewState.updateList()
+                }
+            }
         }
-        viewState.updateList()
+
     }
 
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    override fun onDestroy() {
+        currentDisposable.dispose()
+        super.onDestroy()
     }
 
 }

@@ -50,4 +50,7 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener 
     override fun setUser(user: GithubUser) {
         binding.UserLogin.text = user.login
     }
+
+
+
 }
