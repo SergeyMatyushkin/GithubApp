@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.App
 import com.example.githubapp.databinding.FragmentUsersBinding
-import com.example.githubapp.domain.GithubUsersRepo
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -15,8 +14,8 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
-    val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(GithubUsersRepo(),
+    private val presenter: UsersPresenter by moxyPresenter {
+        UsersPresenter(App.instance.usersRepo,
             App.instance.router)
     }
     var adapter: UsersRVAdapter? = null

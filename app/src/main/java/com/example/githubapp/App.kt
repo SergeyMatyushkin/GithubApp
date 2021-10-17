@@ -1,7 +1,7 @@
 package com.example.githubapp
 
 import android.app.Application
-import com.example.githubapp.domain.GithubUsersRepo
+import com.example.githubapp.impl.GithubUsersRepoImpl
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
 
@@ -17,7 +17,7 @@ class App : Application() {
     val navigatorHolder get() = cicerone.getNavigatorHolder()
     val router get() = cicerone.router
 
-    val usersRepo = GithubUsersRepo()
+    val usersRepo = GithubUsersRepoImpl()
 
     override fun onCreate() {
         super.onCreate()
