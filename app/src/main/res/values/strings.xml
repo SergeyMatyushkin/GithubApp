@@ -7,4 +7,21 @@
     <string name="text_button_enter">Вход</string>
     <string name="text_button_registration">Регистрация</string>
     <string name="text_button_recovery">Не помню логин/пароль</string>
+
+
+
+    <string name="action_settings">Settings</string>
+    <string name="login_1">login 1</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="github_login">gitHub login</string>
+    <string name="error_loading">logins loading Error!</string>
+    <string name="error_profile">user profile loading Error!</string>
+    <string name="like_description_fab">like it</string>
+    <string name="counter_text">0</string>
+    <string name="like_repository_icon">like repository icon</string>
+    <string name="item_repo_description">user repository description</string>
+    <string name="item_repo_name">repository name</string>
+    <string name="large_text">lage_text</string>
+
 </resources>

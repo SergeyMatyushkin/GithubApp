@@ -1,10 +1,12 @@
 package com.example.githubapp.domain
 
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
-interface GithubUsersRepo{
+interface GithubUsersRepo {
 
     val githubUsers: Observable<AppState>
-    fun githubUser(login: String) : Observable<GithubUser>
+    val userRepos: Single<List<UsersRepository>>
+    fun githubUser(login: String) : Single<GithubUser>
 
 }

@@ -1,15 +1,18 @@
 package com.example.githubapp.ui.users
 
+
+
 import com.example.githubapp.AndroidScreens
 import com.example.githubapp.domain.*
+import com.example.githubapp.ui.other.SchedulerProvider
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
 class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
     MvpPresenter<UsersView>() {
-    class UsersListPresenter : IUserListPresenter {
+
+    class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
@@ -21,20 +24,20 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
         }
     }
 
+    private val schedulerProvider: SchedulerProvider = SchedulerProvider()
     val usersListPresenter = UsersListPresenter()
     private var currentDisposable = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
+
         loadData()
-
-
     }
 
     private fun loadData() {
         currentDisposable.add(usersRepo.githubUsers
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(schedulerProvider.ui())
             .subscribe { appState -> renderData(appState) })
     }
 
@@ -50,9 +53,11 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
                     viewState.updateList()
                 }
             }
-        }
 
+
+        }
     }
+
 
     fun backPressed(): Boolean {
         router.exit()
