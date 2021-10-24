@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.githubapp.App
 import com.example.githubapp.R
 import com.example.githubapp.databinding.FragmentProfileBinding
 import com.example.githubapp.domain.GithubUser
 import com.example.githubapp.ui.users.BackButtonListener
+import com.example.githubapp.ui.utils.app
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -30,27 +32,48 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener 
     private val presenter: ProfilePresenter by moxyPresenter {
         ProfilePresenter(
             login,
-            App.instance.usersRepo,
-            App.instance.router
+            requireActivity().app
         )
     }
-
+    private var adapter: ProfileAdapter? = null
+    private var countLike:Int =0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
+        binding.repositoriesRv.layoutManager = LinearLayoutManager(context)
+        adapter = ProfileAdapter(presenter)
+        binding.repositoriesRv.adapter = adapter
+        binding.likeButton.setOnClickListener {
+
+        }
+    }
 
     override fun backPressed() = presenter.backPressed()
 
     override fun setUser(user: GithubUser) {
-        binding.UserLogin.text = user.login
+        binding.tvLogin.text = user.login
+        binding.likeButton.isEnabled = user.like
     }
 
+    override fun updateList() {
+        adapter?.notifyDataSetChanged()
+    }
 
+    override fun setCountLike() {
+        countLike = presenter.setLikeCount(countLike)
+        binding.counterTextView.text = countLike.toString()
+    }
 
 }

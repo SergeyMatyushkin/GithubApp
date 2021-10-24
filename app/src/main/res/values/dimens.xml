@@ -2,4 +2,23 @@
 <resources>
     <dimen name="layout_margin">12dp</dimen>
     <dimen name="text_size_name_app">18sp</dimen>
+
+
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="padding_xs">20dp</dimen>
+    <dimen name="margin_xxxl">200dp</dimen>
+    <dimen name="margin_l">48dp</dimen>
+    <dimen name="margin_top">16dp</dimen>
+    <dimen name="margin_bottom">16dp</dimen>
+    <dimen name="margin_start">16dp</dimen>
+    <dimen name="margin_end">16dp</dimen>
+    <dimen name="padding">10dp</dimen>
+    <dimen name="font_size_header_l">24sp</dimen>
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="radius_corner_xs">8dp</dimen>
+    <dimen name="elevation_xs">4dp</dimen>
+    <dimen name="margin_xxs">8dp</dimen>
+
 </resources>
