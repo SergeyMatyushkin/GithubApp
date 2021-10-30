@@ -9,6 +9,7 @@ import com.example.githubapp.databinding.ItemUserBinding
 
 
 import com.example.githubapp.data.domain.UserListPresenter
+import com.example.githubapp.ui.utils.loadInfo
 
 class UsersAdapter(private val presenter: UserListPresenter) :
     RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
@@ -36,6 +37,11 @@ class UsersAdapter(private val presenter: UserListPresenter) :
         override fun setGitUser(gitHunUser: GithubUser) = with(vb) {
             loginTextView.text = gitHunUser.login.toString()
         }
+
+        override fun imageLoad(url: String?) {
+            vb.avatarImageView.loadInfo(url)
+        }
+
     }
 
 }

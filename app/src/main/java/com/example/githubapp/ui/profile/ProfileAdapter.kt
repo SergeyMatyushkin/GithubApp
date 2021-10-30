@@ -40,6 +40,9 @@ class ProfileAdapter(private val presenter: ProfilePresenter) :RecyclerView.Adap
                         presenter.onLikeClick(userRepository.likeCounter)
                     }
                 }
+                itemView.setOnClickListener {
+                    presenter.openUserRepo(userRepository.htmlUrl)
+                }
             }
 
         }

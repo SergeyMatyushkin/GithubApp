@@ -38,9 +38,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     override fun init() {
-        vb?.rvUsers?.layoutManager = LinearLayoutManager(context)
+        vb?.usersRecyclerView?.layoutManager = LinearLayoutManager(context)
         adapter = UsersAdapter(presenter.usersListPresenter)
-        vb?.rvUsers?.adapter = adapter
+        vb?.usersRecyclerView?.adapter = adapter
     }
 
     override fun updateList() {
