@@ -8,6 +8,8 @@
     <string name="text_button_registration">Регистрация</string>
     <string name="text_button_recovery">Не помню логин/пароль</string>
 
+    <string name="login_text_example">login example</string>
+
 
 
     <string name="action_settings">Settings</string>

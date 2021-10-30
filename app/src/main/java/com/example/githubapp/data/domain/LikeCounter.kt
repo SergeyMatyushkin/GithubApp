@@ -1,4 +1,6 @@
-package com.example.githubapp.domain
+package com.example.githubapp.data.domain
+
+
 
 class PlusLikeEvent: EventBus.Event()
 

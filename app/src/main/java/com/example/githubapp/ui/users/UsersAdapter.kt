@@ -3,10 +3,13 @@ package com.example.githubapp.ui.users
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubapp.data.GithubUser
+import com.example.githubapp.data.domain.UserItemView
 import com.example.githubapp.databinding.ItemUserBinding
 
-import com.example.githubapp.domain.UserItemView
-import com.example.githubapp.domain.UserListPresenter
+
+import com.example.githubapp.data.domain.UserListPresenter
+import com.example.githubapp.ui.utils.loadInfo
 
 class UsersAdapter(private val presenter: UserListPresenter) :
     RecyclerView.Adapter<UsersAdapter.ViewHolder>() {
@@ -31,9 +34,14 @@ class UsersAdapter(private val presenter: UserListPresenter) :
         UserItemView {
         override var pos = -1
 
-        override fun setLogin(text: String) = with(vb) {
-            tvLogin.text = text
+        override fun setGitUser(gitHunUser: GithubUser) = with(vb) {
+            loginTextView.text = gitHunUser.login.toString()
         }
+
+        override fun imageLoad(url: String?) {
+            vb.avatarImageView.loadInfo(url)
+        }
+
     }
 
 }

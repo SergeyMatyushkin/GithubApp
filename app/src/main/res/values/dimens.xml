@@ -21,4 +21,6 @@
     <dimen name="elevation_xs">4dp</dimen>
     <dimen name="margin_xxs">8dp</dimen>
 
+    <dimen name="avatar_size">100dp</dimen>
+
 </resources>

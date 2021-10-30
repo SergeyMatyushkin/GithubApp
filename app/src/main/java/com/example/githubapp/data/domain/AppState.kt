@@ -1,4 +1,7 @@
-package com.example.githubapp.domain
+package com.example.githubapp.data.domain
+
+import com.example.githubapp.data.GithubUser
+
 
 sealed class AppState {
 

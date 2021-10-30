@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_login"
+            android:id="@+id/login_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -21,36 +19,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/pic_image_view"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.3"
+            android:layout_height="wrap_content"
             android:src="@drawable/glasses"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_login" />
-
+            app:layout_constraintTop_toBottomOf="@+id/login_text_view" />
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/repositories_rv"
+            android:id="@+id/repositories_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_l"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pic_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/like_image_view"
             tools:listitem="@layout/item_repositories" />
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/counter_text_view"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_xxs"
             android:layout_marginBottom="@dimen/margin_bottom"
             android:text="@string/counter_text"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/like_image_view"
             app:layout_constraintTop_toTopOf="@+id/like_image_view" />
         <androidx.appcompat.widget.AppCompatImageView
@@ -63,25 +56,21 @@
             android:contentDescription="@string/like_description_fab"
             android:src="@drawable/ic_baseline_pets_24"
             android:tint="@color/secondaryColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pic_image_view" />
         <ToggleButton
             android:id="@+id/like_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_end"
-            android:layout_marginBottom="@dimen/margin_bottom"
-            android:clickable="true"
-            android:focusable="true"
             android:background="@drawable/ic_baseline_favorite_border_24"
             android:backgroundTint="@color/secondaryColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loading_layout"
             app:layout_constraintWidth_percent="0.15" />
-
-
-
+        <include
+            android:id="@+id/loading_layout"
+            layout="@layout/base_loading" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.core.widget.NestedScrollView>

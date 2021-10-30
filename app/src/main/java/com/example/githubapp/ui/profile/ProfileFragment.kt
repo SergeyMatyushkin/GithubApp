@@ -1,5 +1,7 @@
 package com.example.githubapp.ui.profile
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,29 +11,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.githubapp.App
 import com.example.githubapp.R
+import com.example.githubapp.data.GithubUser
 import com.example.githubapp.databinding.FragmentProfileBinding
-import com.example.githubapp.domain.GithubUser
 import com.example.githubapp.ui.users.BackButtonListener
 import com.example.githubapp.ui.utils.app
+import com.example.githubapp.ui.utils.loadInfo
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-const val ARG_USER = "ARG_USER_LOGIN"
+const val GITHUB_USER = "GITHUB_USER"
 
 class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener {
 
     companion object {
-        fun newInstance(login: String) =
-            ProfileFragment().apply { arguments = bundleOf(ARG_USER to login) }
+        fun newInstance(gitHubUser: GithubUser) =
+            ProfileFragment().apply { arguments = bundleOf(GITHUB_USER to gitHubUser) }
     }
 
-    private val login: String? by lazy {
-        arguments?.getString(ARG_USER, "login 1")
+    private val gitHubUser: GithubUser? by lazy {
+        arguments?.getParcelable(GITHUB_USER)
     }
     private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
     private val presenter: ProfilePresenter by moxyPresenter {
         ProfilePresenter(
-            login,
+            gitHubUser,
             requireActivity().app
         )
     }
@@ -52,9 +55,9 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener 
     }
 
     private fun initView() {
-        binding.repositoriesRv.layoutManager = LinearLayoutManager(context)
+        binding.repositoriesRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter = ProfileAdapter(presenter)
-        binding.repositoriesRv.adapter = adapter
+        binding.repositoriesRecyclerView.adapter = adapter
         binding.likeButton.setOnClickListener {
 
         }
@@ -63,8 +66,9 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener 
     override fun backPressed() = presenter.backPressed()
 
     override fun setUser(user: GithubUser) {
-        binding.tvLogin.text = user.login
+        binding.loginTextView.text = user.login.toString()
         binding.likeButton.isEnabled = user.like
+        binding.picImageView.loadInfo(user.avatarUrl)
     }
 
     override fun updateList() {
@@ -74,6 +78,12 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener 
     override fun setCountLike() {
         countLike = presenter.setLikeCount(countLike)
         binding.counterTextView.text = countLike.toString()
+    }
+
+    override fun openUserRepo(repoUrl: String?) {
+        startActivity(Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(repoUrl)
+        })
     }
 
 }
