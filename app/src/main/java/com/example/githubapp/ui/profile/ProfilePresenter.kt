@@ -1,22 +1,21 @@
 package com.example.githubapp.ui.profile
 
 import com.example.githubapp.App
-import com.example.githubapp.domain.GithubUsersRepo
-import com.example.githubapp.domain.MinusLikeEvent
-import com.example.githubapp.domain.PlusLikeEvent
-import com.example.githubapp.domain.UsersRepository
+import com.example.githubapp.data.GithubUser
+import com.example.githubapp.data.UsersRepository
+import com.example.githubapp.data.domain.MinusLikeEvent
+import com.example.githubapp.data.domain.PlusLikeEvent
+import com.example.githubapp.data.repositori.GithubUsersRepoImpl
 import com.example.githubapp.ui.other.SchedulerProvider
-import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 
 class ProfilePresenter(
-    private val login: String?,
+    private val githubUser: GithubUser?,
     app: App
 ) : MvpPresenter<ProfileView>() {
 
-    private val usersRepoImpl = app.usersRepo
+
     private val router = app.router
     private val eventBus = app.eventBus
 
@@ -28,30 +27,30 @@ class ProfilePresenter(
 
     private var currentDisposable = CompositeDisposable()
     private val schedulerProvider: SchedulerProvider = SchedulerProvider()
+    private val usersRepoImpl = GithubUsersRepoImpl(app.api, schedulerProvider)
     val userRepoList = mutableListOf<UsersRepository>()
 
 
     private fun setUser() {
-        login?.let {
-            currentDisposable.add(usersRepoImpl.githubUser(login)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe {gitUser->
-                    viewState.setUser(gitUser)
-                })
+        githubUser?.login?.let {
+            currentDisposable.add(
+                usersRepoImpl.githubUser(it)
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe { gitUser -> viewState.setUser(gitUser) })
         }
 
     }
 
     private fun setRepoList() {
-        currentDisposable.add(usersRepoImpl.userRepos
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
-            .subscribe { userRepoListIn ->
+        githubUser?.reposUrl?.let {
+            currentDisposable.add(usersRepoImpl.userRepos(it)
+                .observeOn(schedulerProvider.ui())
+                .subscribe { userRepoListIn ->
 
-                userRepoList.addAll(userRepoListIn)
-                viewState.updateList()
-            })
+                    userRepoList.addAll(userRepoListIn)
+                    viewState.updateList()
+                })
+        }
     }
 
     fun onLikeClick(likeCounter: Int) {
@@ -63,18 +62,19 @@ class ProfilePresenter(
         viewState.setCountLike()
     }
 
-    fun setLikeCount(count:Int): Int {
+    fun setLikeCount(count: Int): Int {
         var total = 0
         currentDisposable.add(eventBus.get()
             .subscribe {
                 if (it is PlusLikeEvent) {
-                    total = count +1
+                    total = count + 1
                 } else if (it is MinusLikeEvent) {
                     if (count > 0) {
-                        total = count -1
+                        total = count - 1
                     }
                 }
             })
+
         return total
     }
 

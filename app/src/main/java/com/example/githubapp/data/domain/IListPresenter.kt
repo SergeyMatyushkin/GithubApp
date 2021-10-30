@@ -1,4 +1,4 @@
-package com.example.githubapp.domain
+package com.example.githubapp.data.domain
 
 interface ListPresenter<V : IItemView> {
     var itemClickListener: ((V) -> Unit)?

@@ -1,15 +1,18 @@
 package com.example.githubapp.ui.users
 
 
-
 import com.example.githubapp.AndroidScreens
-import com.example.githubapp.domain.*
+import com.example.githubapp.App
+import com.example.githubapp.data.GithubUser
+import com.example.githubapp.data.domain.AppState
+import com.example.githubapp.data.domain.UserItemView
+import com.example.githubapp.data.domain.UserListPresenter
+import com.example.githubapp.data.repositori.GithubUsersRepoImpl
 import com.example.githubapp.ui.other.SchedulerProvider
-import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
-class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router: Router) :
+class UsersPresenter(app: App) :
     MvpPresenter<UsersView>() {
 
     class UsersListPresenter : UserListPresenter {
@@ -20,11 +23,17 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
 
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
-            view.setLogin(user.login)
+            user.let {
+                view.setGitUser(it)
+            }
         }
     }
 
     private val schedulerProvider: SchedulerProvider = SchedulerProvider()
+
+    private val usersRepo = GithubUsersRepoImpl(app.api, schedulerProvider)
+    private val router = app.router
+
     val usersListPresenter = UsersListPresenter()
     private var currentDisposable = CompositeDisposable()
 
@@ -36,19 +45,23 @@ class UsersPresenter(private val usersRepo: GithubUsersRepo, private val router:
     }
 
     private fun loadData() {
-        currentDisposable.add(usersRepo.githubUsers
+        currentDisposable.add(usersRepo.githubUsers()
             .observeOn(schedulerProvider.ui())
-            .subscribe { appState -> renderData(appState) })
+            .subscribe { userList -> renderData(AppState.Success(userList)) })
     }
 
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                appState.data?.let { dataUsers ->
-                    usersListPresenter.users.addAll(dataUsers)
+                appState.data.let { dataUsers ->
+                    if (dataUsers != null) {
+                        usersListPresenter.users.addAll(dataUsers)
+                    }
 
                     usersListPresenter.itemClickListener = { itemView ->
-                        router.navigateTo(AndroidScreens().profile(dataUsers[itemView.pos].login))
+                        dataUsers?.get(itemView.pos)?.let {
+                            router.navigateTo(AndroidScreens().profile(it))
+                        }
                     }
                     viewState.updateList()
                 }

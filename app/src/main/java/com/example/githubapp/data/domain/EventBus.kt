@@ -1,4 +1,4 @@
-package com.example.githubapp.domain
+package com.example.githubapp.data.domain
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject

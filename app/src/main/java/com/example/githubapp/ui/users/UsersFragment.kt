@@ -16,10 +16,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
-            requireActivity().app.usersRepo,
-            requireActivity().app.router
-        )
+        UsersPresenter(requireActivity().app)
     }
 
     private var adapter: UsersAdapter? = null
@@ -49,9 +46,6 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun updateList() {
         adapter?.notifyDataSetChanged()
     }
-
-
-
 
 
 
