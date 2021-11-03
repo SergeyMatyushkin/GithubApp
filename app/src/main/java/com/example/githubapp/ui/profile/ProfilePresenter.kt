@@ -4,8 +4,11 @@ import com.example.githubapp.App
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.data.UsersRepository
 import com.example.githubapp.data.domain.MinusLikeEvent
+import com.example.githubapp.data.domain.NetworkStatusImpl
 import com.example.githubapp.data.domain.PlusLikeEvent
-import com.example.githubapp.data.repositori.GithubUsersRepoImpl
+import com.example.githubapp.data.repositori.GithubUserRepoCombinedImpl
+import com.example.githubapp.data.repositori.GithubUsersLocalRepoImpl
+import com.example.githubapp.data.repositori.GithubUsersWebRepoImpl
 import com.example.githubapp.ui.other.SchedulerProvider
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
@@ -27,7 +30,12 @@ class ProfilePresenter(
 
     private var currentDisposable = CompositeDisposable()
     private val schedulerProvider: SchedulerProvider = SchedulerProvider()
-    private val usersRepoImpl = GithubUsersRepoImpl(app.api, schedulerProvider)
+    private val usersRepoImpl = GithubUserRepoCombinedImpl(
+        GithubUsersLocalRepoImpl(app.gitHubDB),
+        GithubUsersWebRepoImpl(app.api),
+        NetworkStatusImpl(app),
+        schedulerProvider
+    )
     val userRepoList = mutableListOf<UsersRepository>()
 
 
@@ -43,7 +51,7 @@ class ProfilePresenter(
 
     private fun setRepoList() {
         githubUser?.reposUrl?.let {
-            currentDisposable.add(usersRepoImpl.userRepos(it)
+            currentDisposable.add(usersRepoImpl.userRepos(it, githubUser.id)
                 .observeOn(schedulerProvider.ui())
                 .subscribe { userRepoListIn ->
 

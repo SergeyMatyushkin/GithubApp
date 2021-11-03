@@ -6,18 +6,18 @@ import com.example.githubapp.data.datasource.GitHubApi
 import com.example.githubapp.ui.other.SchedulerProvider
 import io.reactivex.rxjava3.core.Single
 
-class GithubUsersRepoImpl(
-    private val githubApi: GitHubApi,
-    private val schedulerProvider: SchedulerProvider
+class GithubUsersWebRepoImpl(
+    private val githubApi: GitHubApi
+
 ) : GithubUsersRepo {
 
     override fun githubUsers(): Single<List<GithubUser>> =
-        githubApi.getGitHubUsers().subscribeOn(schedulerProvider.io())
+        githubApi.getGitHubUsers()
 
-    override fun userRepos(repoUrl: String): Single<List<UsersRepository>> =
-        githubApi.getUserRepos(repoUrl).subscribeOn(schedulerProvider.io())
+    override fun userRepos(repoUrl: String, userId:Int?): Single<List<UsersRepository>> =
+        githubApi.getUserRepos(repoUrl)
 
     override fun githubUser(login: String): Single<GithubUser> =
-        githubApi.getUserByLogin(login).subscribeOn(schedulerProvider.io())
+        githubApi.getUserByLogin(login)
 
 }

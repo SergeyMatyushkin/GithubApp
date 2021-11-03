@@ -1,8 +1,10 @@
 package com.example.githubapp
 
 import android.app.Application
+import androidx.room.Room
 import com.example.githubapp.data.datasource.GitHubApi
 import com.example.githubapp.data.domain.EventBus
+import com.example.githubapp.data.room.GithubDatabase
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.github.terrakok.cicerone.Cicerone
@@ -15,8 +17,9 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 const val BASE_URL = "https://api.github.com"
+const val DB_NAME = "githubDB"
 
-class App:Application() {
+class App : Application() {
 
     //Временно до даггера положим это тут
     // навигация
@@ -52,5 +55,10 @@ class App:Application() {
             .build()
             .create(GitHubApi::class.java)
     }
+
+    val gitHubDB
+        get() = Room
+            .databaseBuilder(this, GithubDatabase::class.java, DB_NAME)
+            .build()
 
 }
