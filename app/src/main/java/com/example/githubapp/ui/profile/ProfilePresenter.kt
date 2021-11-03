@@ -51,7 +51,7 @@ class ProfilePresenter(
 
     private fun setRepoList() {
         githubUser?.reposUrl?.let {
-            currentDisposable.add(usersRepoImpl.userRepos(it)
+            currentDisposable.add(usersRepoImpl.userRepos(it, githubUser.id)
                 .observeOn(schedulerProvider.ui())
                 .subscribe { userRepoListIn ->
 

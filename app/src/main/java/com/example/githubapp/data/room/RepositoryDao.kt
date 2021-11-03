@@ -8,31 +8,34 @@ import io.reactivex.rxjava3.core.Single
 interface RepositoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: GithubRepositoryEntity): Completable
+    fun insert(repo: GithubRepositoryEntity): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg users: GithubRepositoryEntity):Completable
+    fun insert(vararg repos: GithubRepositoryEntity):Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(users: List<GithubRepositoryEntity>):Completable
+    fun insert(repos: List<GithubRepositoryEntity>):Completable
 
     @Update
-    fun update(user: GithubRepositoryEntity):Completable
+    fun update(repo: GithubRepositoryEntity):Completable
 
     @Update
-    fun update(vararg users: GithubRepositoryEntity):Completable
+    fun update(vararg repos: GithubRepositoryEntity):Completable
 
     @Update
-    fun update(users: List<GithubRepositoryEntity>):Completable
+    fun update(repos: List<GithubRepositoryEntity>):Completable
+
 
     @Delete
-    fun delete(user: GithubRepositoryEntity):Completable
+    fun delete(repo: GithubRepositoryEntity):Completable
+
 
     @Delete
-    fun delete(vararg users: GithubRepositoryEntity):Completable
+    fun delete(vararg repos: GithubRepositoryEntity):Completable
+
 
     @Delete
-    fun delete(users: List<GithubRepositoryEntity>):Completable
+    fun delete(repos: List<GithubRepositoryEntity>):Completable
 
     @Query("SELECT * FROM GithubRepositoryEntity")
     fun getAll(): Single<List<GithubRepositoryEntity>>

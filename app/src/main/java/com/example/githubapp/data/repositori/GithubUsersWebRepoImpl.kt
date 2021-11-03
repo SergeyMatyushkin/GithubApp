@@ -14,7 +14,7 @@ class GithubUsersWebRepoImpl(
     override fun githubUsers(): Single<List<GithubUser>> =
         githubApi.getGitHubUsers()
 
-    override fun userRepos(repoUrl: String): Single<List<UsersRepository>> =
+    override fun userRepos(repoUrl: String, userId:Int?): Single<List<UsersRepository>> =
         githubApi.getUserRepos(repoUrl)
 
     override fun githubUser(login: String): Single<GithubUser> =

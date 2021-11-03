@@ -17,7 +17,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 const val BASE_URL = "https://api.github.com"
-const val DB_NAME = "GithubDB"
+const val DB_NAME = "githubDB"
 
 class App : Application() {
 

@@ -17,6 +17,7 @@ class UsersRepository(
     val htmlUrl: String?,
     @Json(name = "id")
     val id: Int?,
+    var userId: Int?,
     @Json(name = "name")
     val name: String?,
     //@Json(name = "node_id")

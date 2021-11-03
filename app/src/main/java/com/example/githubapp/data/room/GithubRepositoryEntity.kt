@@ -18,7 +18,7 @@ data class GithubRepositoryEntity (
     val htmlUrl: String?,
     @PrimaryKey
     val id: Int?,
-    var userId: String?,
+    var userId: Int?,
     @ColumnInfo(name = "name")
     val name: String?,
     @ColumnInfo(name = "description")
