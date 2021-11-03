@@ -5,9 +5,12 @@ import com.example.githubapp.AndroidScreens
 import com.example.githubapp.App
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.data.domain.AppState
+import com.example.githubapp.data.domain.NetworkStatusImpl
 import com.example.githubapp.data.domain.UserItemView
 import com.example.githubapp.data.domain.UserListPresenter
-import com.example.githubapp.data.repositori.GithubUsersRepoImpl
+import com.example.githubapp.data.repositori.GithubUserRepoCombinedImpl
+import com.example.githubapp.data.repositori.GithubUsersLocalRepoImpl
+import com.example.githubapp.data.repositori.GithubUsersWebRepoImpl
 import com.example.githubapp.ui.other.SchedulerProvider
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
@@ -32,7 +35,12 @@ class UsersPresenter(app: App) :
 
     private val schedulerProvider: SchedulerProvider = SchedulerProvider()
 
-    private val usersRepo = GithubUsersRepoImpl(app.api, schedulerProvider)
+    private val usersRepo = GithubUserRepoCombinedImpl(
+        GithubUsersLocalRepoImpl(app.gitHubDB),
+        GithubUsersWebRepoImpl(app.api),
+        NetworkStatusImpl(app),
+        schedulerProvider
+    )
     private val router = app.router
 
     val usersListPresenter = UsersListPresenter()
