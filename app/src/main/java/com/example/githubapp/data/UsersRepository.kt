@@ -1,11 +1,8 @@
 package com.example.githubapp.data
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
-import com.squareup.moshi.JsonClass
-
 import com.squareup.moshi.Json
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class UsersRepository(

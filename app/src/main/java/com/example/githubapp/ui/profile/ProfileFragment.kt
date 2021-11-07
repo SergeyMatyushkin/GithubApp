@@ -9,12 +9,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.githubapp.App
 import com.example.githubapp.R
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.databinding.FragmentProfileBinding
 import com.example.githubapp.ui.users.BackButtonListener
-import com.example.githubapp.ui.utils.app
 import com.example.githubapp.ui.utils.loadInfo
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -35,7 +33,8 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener 
     private val presenter: ProfilePresenter by moxyPresenter {
         ProfilePresenter(
             gitHubUser,
-            requireActivity().app
+
+
         )
     }
     private var adapter: ProfileAdapter? = null
