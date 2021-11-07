@@ -2,20 +2,18 @@ package com.example.githubapp.ui.users
 
 
 import com.example.githubapp.AndroidScreens
-import com.example.githubapp.App
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.data.domain.AppState
-import com.example.githubapp.data.domain.NetworkStatusImpl
 import com.example.githubapp.data.domain.UserItemView
 import com.example.githubapp.data.domain.UserListPresenter
-import com.example.githubapp.data.repositori.GithubUserRepoCombinedImpl
-import com.example.githubapp.data.repositori.GithubUsersLocalRepoImpl
-import com.example.githubapp.data.repositori.GithubUsersWebRepoImpl
+import com.example.githubapp.data.repositori.GithubUsersRepo
 import com.example.githubapp.ui.other.SchedulerProvider
+import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
+import org.koin.java.KoinJavaComponent.inject
 
-class UsersPresenter(app: App) :
+class UsersPresenter() :
     MvpPresenter<UsersView>() {
 
     class UsersListPresenter : UserListPresenter {
@@ -35,13 +33,8 @@ class UsersPresenter(app: App) :
 
     private val schedulerProvider: SchedulerProvider = SchedulerProvider()
 
-    private val usersRepo = GithubUserRepoCombinedImpl(
-        GithubUsersLocalRepoImpl(app.gitHubDB),
-        GithubUsersWebRepoImpl(app.api),
-        NetworkStatusImpl(app),
-        schedulerProvider
-    )
-    private val router = app.router
+    private val usersRepo : GithubUsersRepo by inject(GithubUsersRepo::class.java)
+    private val router: Router by inject(Router::class.java)
 
     val usersListPresenter = UsersListPresenter()
     private var currentDisposable = CompositeDisposable()

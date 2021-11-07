@@ -1,26 +1,24 @@
 package com.example.githubapp.ui.profile
 
-import com.example.githubapp.App
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.data.UsersRepository
+import com.example.githubapp.data.domain.EventBus
 import com.example.githubapp.data.domain.MinusLikeEvent
-import com.example.githubapp.data.domain.NetworkStatusImpl
 import com.example.githubapp.data.domain.PlusLikeEvent
-import com.example.githubapp.data.repositori.GithubUserRepoCombinedImpl
-import com.example.githubapp.data.repositori.GithubUsersLocalRepoImpl
-import com.example.githubapp.data.repositori.GithubUsersWebRepoImpl
+import com.example.githubapp.data.repositori.GithubUsersRepo
 import com.example.githubapp.ui.other.SchedulerProvider
+import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
+import org.koin.java.KoinJavaComponent.inject
 
 class ProfilePresenter(
-    private val githubUser: GithubUser?,
-    app: App
+    private val githubUser: GithubUser?
 ) : MvpPresenter<ProfileView>() {
 
 
-    private val router = app.router
-    private val eventBus = app.eventBus
+    private val router: Router by inject(Router::class.java)
+    private val eventBus by inject<EventBus>(EventBus::class.java)
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -30,12 +28,7 @@ class ProfilePresenter(
 
     private var currentDisposable = CompositeDisposable()
     private val schedulerProvider: SchedulerProvider = SchedulerProvider()
-    private val usersRepoImpl = GithubUserRepoCombinedImpl(
-        GithubUsersLocalRepoImpl(app.gitHubDB),
-        GithubUsersWebRepoImpl(app.api),
-        NetworkStatusImpl(app),
-        schedulerProvider
-    )
+    private val usersRepoImpl : GithubUsersRepo by inject(GithubUsersRepo::class.java)
     val userRepoList = mutableListOf<UsersRepository>()
 
 

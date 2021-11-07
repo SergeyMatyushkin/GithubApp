@@ -4,30 +4,27 @@ package com.example.githubapp.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-
 import com.example.githubapp.AndroidScreens
-import com.example.githubapp.App
 import com.example.githubapp.R
-
 import com.example.githubapp.databinding.ActivityScrollingBinding
-
 import com.example.githubapp.impl.MainView
 import com.example.githubapp.ui.users.BackButtonListener
-import com.example.githubapp.ui.utils.app
-
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.snackbar.Snackbar
-
-
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import org.koin.android.ext.android.inject
 
 class MainActivity : MvpAppCompatActivity(), MainView  {
 
     private lateinit var binding: ActivityScrollingBinding
     private val navigator = AppNavigator(this, R.id.container)
+    private val router: Router by inject()
+    private val navigatorHolder:NavigatorHolder by inject()
 
-    private val presenter by moxyPresenter { MainPresenter(app.router, AndroidScreens()) }
+    private val presenter by moxyPresenter { MainPresenter(router, AndroidScreens()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +58,12 @@ class MainActivity : MvpAppCompatActivity(), MainView  {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        app.navigatorHolder.setNavigator(navigator)
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onPause() {
         super.onPause()
-        app.navigatorHolder.removeNavigator()
+        navigatorHolder.removeNavigator()
     }
 
     override fun onBackPressed() {

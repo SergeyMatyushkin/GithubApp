@@ -3,7 +3,6 @@ package com.example.githubapp.data.repositori
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.data.UsersRepository
 import com.example.githubapp.data.datasource.GitHubApi
-import com.example.githubapp.ui.other.SchedulerProvider
 import io.reactivex.rxjava3.core.Single
 
 class GithubUsersWebRepoImpl(
