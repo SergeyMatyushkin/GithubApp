@@ -11,7 +11,8 @@ import com.example.githubapp.ui.other.SchedulerProvider
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
-import org.koin.java.KoinJavaComponent.inject
+import javax.inject.Inject
+
 
 class UsersPresenter() :
     MvpPresenter<UsersView>() {
@@ -33,8 +34,10 @@ class UsersPresenter() :
 
     private val schedulerProvider: SchedulerProvider = SchedulerProvider()
 
-    private val usersRepo : GithubUsersRepo by inject(GithubUsersRepo::class.java)
-    private val router: Router by inject(Router::class.java)
+    @Inject
+    lateinit var usersRepo : GithubUsersRepo
+    @Inject
+    lateinit var router: Router
 
     val usersListPresenter = UsersListPresenter()
     private var currentDisposable = CompositeDisposable()

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.databinding.FragmentUsersBinding
+import com.example.githubapp.ui.utils.app
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -15,7 +16,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter()
+        UsersPresenter().apply {
+            requireActivity().app.appComponent.inject(this)
+        }
     }
 
     private var adapter: UsersAdapter? = null

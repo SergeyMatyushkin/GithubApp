@@ -1,10 +1,17 @@
 package com.example.githubapp.ui.utils
 
+import android.content.Context
+import com.example.githubapp.App
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.data.UsersRepository
 import com.example.githubapp.data.room.GithubRepositoryEntity
 import com.example.githubapp.data.room.GithubUserEntity
 
+
+val Context.app: App
+    get() {
+        return applicationContext as App
+    }
 
 fun githubUserListMap(users: List<GithubUserEntity>) =
     users.map {
@@ -46,7 +53,7 @@ fun githubUserEntityListMap(users: List<GithubUser>) =
         githubUserEntityMap(it)
     }
 
-fun usersReposEntityMap(repos: List<UsersRepository>, userId:Int?) =
+fun usersReposEntityMap(repos: List<UsersRepository>, userId: Int?) =
     repos.map {
         GithubRepositoryEntity(
             it.htmlUrl,
