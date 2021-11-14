@@ -13,6 +13,7 @@ import com.example.githubapp.R
 import com.example.githubapp.data.GithubUser
 import com.example.githubapp.databinding.FragmentProfileBinding
 import com.example.githubapp.ui.users.BackButtonListener
+import com.example.githubapp.ui.utils.app
 import com.example.githubapp.ui.utils.loadInfo
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -32,10 +33,10 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView, BackButtonListener 
     private val binding: FragmentProfileBinding by viewBinding(FragmentProfileBinding::bind)
     private val presenter: ProfilePresenter by moxyPresenter {
         ProfilePresenter(
-            gitHubUser,
-
-
-        )
+            gitHubUser
+        ).apply {
+            requireActivity().app.appComponent.inject(this)
+        }
     }
     private var adapter: ProfileAdapter? = null
     private var countLike:Int =0
